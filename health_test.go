@@ -49,7 +49,8 @@ func TestUpdateHeartbeat(t *testing.T) {
 }
 
 func TestCanalListener(t *testing.T) {
-	//assert := assert.New(t)
+	assert := assert.New(t)
+	ts := time.Now()
 
 	newRowEvent := func(table string, action string, rows [][]interface{}) *canal.RowsEvent {
 		e := new(canal.RowsEvent)
@@ -59,26 +60,41 @@ func TestCanalListener(t *testing.T) {
 		e.Table = t
 		e.Action = action
 		e.Rows = rows
-		fmt.Printf("%v\n", rows)
-
 		return e
 	}
 
-	vs := make([]interface{}, 2)
-
 	testCases := []struct {
-		table string
-		event *canal.RowsEvent
+		event    *canal.RowsEvent
+		expected int64
 	}{
 		{
-			HeartbeatTable,
-			newRowEvent(HeartbeatTable, canal.UpdateAction, [][]interface{}{vs})},
+			newRowEvent(
+				HeartbeatTable,
+				canal.UpdateAction,
+				[][]interface{}{{"Heartbeat", "2018-01-12 22:08:33"}, {"Heartbeat", ts.Format("2006-01-02 15:04:05")}}),
+			ts.Unix(),
+		},
+		{
+			newRowEvent(
+				HeartbeatTable,
+				canal.UpdateAction,
+				[][]interface{}{{"Heartbeat", "2018-01-12 22:08:33"}}),
+			0,
+		},
+		{
+			newRowEvent(
+				"someTable",
+				canal.UpdateAction,
+				[][]interface{}{{"Heartbeat", "2018-01-12 22:08:33"}, {"Heartbeat", ts.Format("2006-01-02 15:04:05")}}),
+			0,
+		},
 	}
 
 	for _, tc := range testCases {
-		t.Run(fmt.Sprintf("tableName:%s, event:%v", tc.table, tc.event), func(t *testing.T) {
+		t.Run(fmt.Sprintf("event:%v, expected:%d", tc.event, tc.expected), func(t *testing.T) {
 			health := New("1.0.0")
 			health.CanalListener(tc.event)
+			assert.Equal(tc.expected, health.Heartbeat)
 		})
 	}
 }

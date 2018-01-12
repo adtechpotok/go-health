@@ -48,26 +48,30 @@ func (health *Health) Health() *Health {
 	return health
 }
 
-func (health *Health) CanalListener(e *canal.RowsEvent) {
+func (health *Health) CanalListener(e *canal.RowsEvent) error {
 	if health.heartbeatTable == e.Table.Name {
 		if len(e.Rows) > 1 {
-			health.updateHeartbeat(e.Rows[1][1].(string))
+			return health.updateHeartbeat(e.Rows[1][1].(string))
 		}
 	}
+	return nil
 }
 
 // принимает datetime из mysql в формате "yyyy-mm-dd hh:ii:ss" и преобразовыват в unix_timestamp
-func (health *Health) updateHeartbeat(datetime string) {
-	t, err := time.Parse("2006-01-02 15:04:05", datetime)
+func (health *Health) updateHeartbeat(datetime string) error {
+	t, err := time.ParseInLocation("2006-01-02 15:04:05", datetime, time.Local)
 	if err == nil {
 		health.Heartbeat = t.Unix()
 	}
+	return err
 }
 
+// потоко-безопасно увеличивает счетчик предупреждений
 func (health *Health) incWarning() {
 	atomic.AddUint64(&health.Warnings, 1)
 }
 
+// потоко-безопасно увеличивает счетчик ошибок
 func (health *Health) incError() {
 	atomic.AddUint64(&health.Errors, 1)
 }

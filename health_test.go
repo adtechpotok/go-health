@@ -98,3 +98,13 @@ func TestCanalListener(t *testing.T) {
 		})
 	}
 }
+
+func TestHealthEmptyCanal(t *testing.T) {
+	assert := assert.New(t)
+
+	health := New("1.0.0")
+	err := health.Health()
+
+	assert.EqualError(err, "health.canal is empty")
+	assert.Equal(uint64(time.Since(health.start).Seconds()), health.Lifetime)
+}

@@ -1,6 +1,7 @@
 package health
 
 import (
+	"errors"
 	"time"
 	"github.com/siddontang/go-mysql/canal"
 	"sync/atomic"
@@ -35,17 +36,21 @@ func New(version string) *Health {
 	}
 }
 
-// todo - фигово что это не в инициализации
 func (health *Health) SetCanal(canal *canal.Canal) {
 	health.canal = canal
 }
 
-// возвращает актуальное состояние "здоровья" демона
-func (health *Health) Health() *Health {
+// актуальное состояние "здоровья" демона
+func (health *Health) Health() error {
 	health.Lifetime = uint64(time.Since(health.start).Seconds())
+	if health.canal == nil {
+		return errors.New("health.canal is empty")
+	}
+
 	health.BinLogPosition = health.canal.SyncedPosition().Pos
 	health.BinLogFile = health.canal.SyncedPosition().Name
-	return health
+
+	return nil
 }
 
 func (health *Health) CanalListener(e *canal.RowsEvent) error {

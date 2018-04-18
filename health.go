@@ -22,6 +22,7 @@ type Health struct {
 	BinLogPosition uint32
 	BinLogFile     string
 	Additional     interface{}
+	CacheState 	   map[string]int
 }
 
 // создает и возвращает новый объект здоровья

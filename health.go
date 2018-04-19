@@ -2,9 +2,9 @@ package health
 
 import (
 	"errors"
-	"time"
 	"github.com/siddontang/go-mysql/canal"
 	"sync/atomic"
+	"time"
 )
 
 const HeartbeatTable = "SystemEvents"
@@ -22,7 +22,7 @@ type Health struct {
 	BinLogPosition uint32
 	BinLogFile     string
 	Additional     interface{}
-	CacheState 	   map[string]int
+	CacheState     map[string]int
 }
 
 // создает и возвращает новый объект здоровья

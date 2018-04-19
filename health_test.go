@@ -1,12 +1,12 @@
 package health
 
 import (
-	"testing"
-	"time"
-	"github.com/stretchr/testify/assert"
 	"fmt"
 	"github.com/siddontang/go-mysql/canal"
 	"github.com/siddontang/go-mysql/schema"
+	"github.com/stretchr/testify/assert"
+	"testing"
+	"time"
 )
 
 func TestSyncInc(t *testing.T) {

@@ -1,10 +1,10 @@
 package health
 
 import (
-	"testing"
-	"github.com/sirupsen/logrus"
 	"fmt"
+	"github.com/sirupsen/logrus"
 	"github.com/stretchr/testify/assert"
+	"testing"
 )
 
 func TestFire(t *testing.T) {

@@ -1,11 +1,10 @@
 language: go
 
 go:
-  - 1.8.x
-  - 1.9.x
+  - 1.10.x
 
 before_install:
   - go get -v ./...
 
 script:
-  - go test -v ./...
+  - go test -cover -v ./...

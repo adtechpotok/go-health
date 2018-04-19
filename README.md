@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/scarbo87/go-health.svg?branch=master)](https://travis-ci.org/scarbo87/go-health)
+[![Build Status](https://travis-ci.org/adtechpotok/go-health.svg?branch=master)
 
 # Go health
 

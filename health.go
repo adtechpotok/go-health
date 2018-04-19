@@ -42,16 +42,16 @@ func (health *Health) SetCanal(canal *canal.Canal) {
 }
 
 // актуальное состояние "здоровья" демона
-func (health *Health) Health() error {
+func (health *Health) Health() (*Health, error) {
 	health.Lifetime = uint64(time.Since(health.start).Seconds())
 	if health.canal == nil {
-		return errors.New("health.canal is empty")
+		return nil, errors.New("health.canal is empty")
 	}
 
 	health.BinLogPosition = health.canal.SyncedPosition().Pos
 	health.BinLogFile = health.canal.SyncedPosition().Name
 
-	return nil
+	return health, nil
 }
 
 func (health *Health) CanalListener(e *canal.RowsEvent) error {

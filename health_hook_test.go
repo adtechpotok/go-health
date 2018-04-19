@@ -22,7 +22,7 @@ func TestFire(t *testing.T) {
 	}
 
 	for _, tc := range testCases {
-		t.Run(fmt.Sprintf("entry:%s, warnings:%d, errors:%d", tc.entry, tc.warnings, tc.errors), func(t *testing.T) {
+		t.Run(fmt.Sprintf("entry:%v, warnings:%d, errors:%d", tc.entry, tc.warnings, tc.errors), func(t *testing.T) {
 			hook := NewHealthHook("1.0.0")
 			hook.Fire(tc.entry)
 			assert.Equal(tc.warnings, hook.Health.Warnings)

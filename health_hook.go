@@ -4,14 +4,17 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+//Hook for logrus
 type HealthHook struct {
 	Health *Health
 }
 
+//Create and return a new instance of the hook
 func NewHealthHook(version string) *HealthHook {
 	return &HealthHook{New(version)}
 }
 
+//Execute hook
 func (hook *HealthHook) Fire(entry *logrus.Entry) error {
 	switch entry.Level {
 	case logrus.PanicLevel:
@@ -27,6 +30,7 @@ func (hook *HealthHook) Fire(entry *logrus.Entry) error {
 	return nil
 }
 
+//Return slice of logrus levels with witch hook work
 func (hook *HealthHook) Levels() []logrus.Level {
 	return []logrus.Level{
 		logrus.PanicLevel,

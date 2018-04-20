@@ -108,3 +108,13 @@ func TestHealthEmptyCanal(t *testing.T) {
 	assert.EqualError(err, "health.canal is empty")
 	assert.Equal(uint64(time.Since(health.start).Seconds()), health.Lifetime)
 }
+
+func TestHealthSetCanal(t *testing.T) {
+	assert := assert.New(t)
+	health := New("1.0.0")
+	canal := new(canal.Canal)
+	canal.AddDumpDatabases("12")
+	health.SetCanal(canal)
+	assert.Equal(canal, health.canal)
+}
+

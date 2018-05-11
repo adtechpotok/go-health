@@ -47,7 +47,7 @@ func industrialHealth(w http.ResponseWriter, _ *http.Request, _ httprouter.Param
 
 ```
 
-add to catch binlog updates
+add this to catch binlog slowdowns *don't forget to add mysql trigger to fix binlog freezing
 ```$xslt
 func (h *binlogHandler) OnRow(e *canal.RowsEvent) error {
 	defer func() {

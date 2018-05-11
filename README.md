@@ -40,9 +40,9 @@ func industrialHealth(w http.ResponseWriter, _ *http.Request, _ httprouter.Param
 		return
 	}
 
-		w.Header().Set("Content-Type", "application/json; charset=utf-8")
-        js, _ := jsoniter.Marshal(result)
-    	w.Write(js)
+    w.Header().Set("Content-Type", "application/json; charset=utf-8")
+    js, _ := jsoniter.Marshal(result)
+    w.Write(js)
 }
 
 ```
